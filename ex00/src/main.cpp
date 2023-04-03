@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:09:08 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/03 17:14:04 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/03 20:03:34 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <ctime>
 #include <cstdlib>
+#include <iomanip> 
 
 
 int read_csv_file(std::map<std::time_t, float> * datamap)
@@ -77,9 +78,8 @@ int read_csv_file(std::map<std::time_t, float> * datamap)
     return  (0);
 }
 
-int read_txt_file(std::map<std::time_t, float> * datamap)
+int read_txt_file(const char * filename, std::map<std::time_t, float> * datamap)
 {
-    const char* filename = "input.txt";
     std::ifstream txtfile(filename);
     std::string format = "%Y-%m-%d";
     
@@ -130,16 +130,25 @@ int read_txt_file(std::map<std::time_t, float> * datamap)
                 }   
                 i++;
             }
-            if (value != -1)
+            
             // comparing timestamps
+            if (value != -1)
             {
                 std::map<std::time_t, float>::iterator iter;
                 iter = datamap->lower_bound(timegm(&tm_struct));
-                if (datamap->begin()->first < timegm(&tm_struct) && processed == 0)
+                if ((datamap->begin()->first > timegm(&tm_struct)) && processed == 0)
                     {
-                        std::cout << "Error: No Bitcoin Value before this date: " << element << std::endl;
+                        char buf[80];
+                        std::strftime(buf, sizeof(buf), "%Y-%m-%d", &tm_struct);
+                        std::cout << "Error: No Bitcoin Value before this date: " << buf << std::endl;
                         processed = 1;
                     }
+                else if ((--datamap->end())->first < timegm(&tm_struct))
+                {
+                    iter = datamap->end();
+                    iter--;
+                    // std::cout << "datamap->end()->first " << iter->first << std::endl;
+                }
                 else if ((iter->first != timegm(&tm_struct)) && (datamap->end() != iter) && processed == 0)          
                     iter--;
                 
@@ -147,7 +156,10 @@ int read_txt_file(std::map<std::time_t, float> * datamap)
                 if (processed == 0)
                 {
                     float result = value * iter->second;
-                    std::cout << element << " => " << value  <<  result << std::endl;
+                    char buf[80];
+                    std::strftime(buf, sizeof(buf), "%Y-%m-%d", &tm_struct);
+                    // std::cout << "map element" << iter->first << "---" << iter->second << std::endl;
+                    std::cout << buf << " => " << value  << " * " << std::fixed << std::setprecision(2) << iter->second << " = " <<  result << std::endl;
                 }
             
             //     datamap->insert(std::pair<time_t, float>(timegm(&tm_struct),value));
@@ -168,14 +180,33 @@ int read_txt_file(std::map<std::time_t, float> * datamap)
     return  (0);
 }
 
+int input_check(int argc, char ** argv)
+{
+    if (argc != 2)
+    {
+        std::cout << "Check the Syntax: \"./btc inputfile.txt\"" << std::endl;
+        return (1);
+    }
+    // *filename_str = argv[1];
+    // size_t len = strlen(argv[1]);
+    // if (ft_strncmp(&argv[1][len - 3], ".rt", 3) != 0)
+	// 	return (0);
+	// return (1);
+    (void) argv;
+    // (void) filename_str;
+    return (0);
+    
+}
 
-int main(void)
+int main(int argc, char ** argv)
 {
     std::map<std::time_t, float> datamap;
-    
+    const char * filename = "input.txt";
+    if (input_check(argc, argv))
+        return (1);
     if (read_csv_file(&datamap))
         return (1);
-    if (read_txt_file(&datamap))
+    if (read_txt_file(filename, &datamap))
         return (1);
     
     
