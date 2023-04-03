@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:09:08 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/03 15:15:25 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/03 17:14:04 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int read_csv_file(std::map<std::time_t, float> * datamap)
     return  (0);
 }
 
-int read_txt_file()
+int read_txt_file(std::map<std::time_t, float> * datamap)
 {
     const char* filename = "input.txt";
     std::ifstream txtfile(filename);
@@ -95,8 +95,10 @@ int read_txt_file()
             std::stringstream ssline(line);
             std::string element;
             int i = 0;
+            int processed = 0;
             struct tm tm_struct = {};
             float value = -1;
+            
             while (std::getline(ssline, element, '|'))
             {
                 //cutting leading and following spaces and tabs
@@ -112,6 +114,7 @@ int read_txt_file()
                     if(!strptime(element.c_str(), "%Y-%m-%d", &tm_struct))
                     {
                         std::cout << "Error: Failed to parse date string " << element << std::endl;
+                        processed = 1;
                         break; 
                     }
                 }
@@ -128,8 +131,28 @@ int read_txt_file()
                 i++;
             }
             if (value != -1)
+            // comparing timestamps
+            {
+                std::map<std::time_t, float>::iterator iter;
+                iter = datamap->lower_bound(timegm(&tm_struct));
+                if (datamap->begin()->first < timegm(&tm_struct) && processed == 0)
+                    {
+                        std::cout << "Error: No Bitcoin Value before this date: " << element << std::endl;
+                        processed = 1;
+                    }
+                else if ((iter->first != timegm(&tm_struct)) && (datamap->end() != iter) && processed == 0)          
+                    iter--;
+                
+            // calculating
+                if (processed == 0)
+                {
+                    float result = value * iter->second;
+                    std::cout << element << " => " << value  <<  result << std::endl;
+                }
+            
             //     datamap->insert(std::pair<time_t, float>(timegm(&tm_struct),value));
-                std::cout << timegm(&tm_struct) << " --- " << value << std::endl;
+                // std::cout << timegm(&tm_struct) << " --- " << value << std::endl;
+            }
         }
         // // Printing Map
         // std::cout << "Map Content:" <<std:: endl;
@@ -152,7 +175,7 @@ int main(void)
     
     if (read_csv_file(&datamap))
         return (1);
-    if (read_txt_file())
+    if (read_txt_file(&datamap))
         return (1);
     
     
