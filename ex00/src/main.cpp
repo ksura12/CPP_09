@@ -6,11 +6,12 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:09:08 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/03 20:03:34 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/03 23:29:56 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <cstring>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -180,33 +181,33 @@ int read_txt_file(const char * filename, std::map<std::time_t, float> * datamap)
     return  (0);
 }
 
-int input_check(int argc, char ** argv)
+int input_check(char ** argv, std::string * filename)
 {
-    if (argc != 2)
+    size_t len = filename->length();
+    if (strncmp(&argv[1][len - 4], ".txt", 4) != 0)
     {
-        std::cout << "Check the Syntax: \"./btc inputfile.txt\"" << std::endl;
+        std::cout << "ERROR: Please use a .txt file as input" << std::endl;
         return (1);
     }
-    // *filename_str = argv[1];
-    // size_t len = strlen(argv[1]);
-    // if (ft_strncmp(&argv[1][len - 3], ".rt", 3) != 0)
-	// 	return (0);
-	// return (1);
-    (void) argv;
-    // (void) filename_str;
     return (0);
     
 }
 
 int main(int argc, char ** argv)
 {
+    if (argc != 2)
+    {
+        std::cout << "Check the Syntax: \"./btc inputfile.txt\"" << std::endl;
+        return (1);
+    }
+    std::string filename(argv[1]);
     std::map<std::time_t, float> datamap;
-    const char * filename = "input.txt";
-    if (input_check(argc, argv))
+    // const char * filename = "input.txt";
+    if (input_check(argv, &filename))
         return (1);
     if (read_csv_file(&datamap))
         return (1);
-    if (read_txt_file(filename, &datamap))
+    if (read_txt_file(filename.c_str(), &datamap))
         return (1);
     
     
