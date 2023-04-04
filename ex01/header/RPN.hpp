@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:45:54 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/04 16:07:18 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/04 18:57:25 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <stdlib.h>
 
 class RPN
 {
     private:
         std::stack<double> stack;
-        char ** input;
+        std::string input;
 
     public:
         RPN(char ** argv);

@@ -6,19 +6,18 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2023/03/24 10:32:51 by ksura            ###   ########.fr        #
+#    Updated: 2023/04/04 19:04:19 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := btc
+NAME := RPN
 CC = c++
-CFLAGS := -Wall -Werror -Wextra -std=c++98 -D DEBUG=0
-DFLAGS := -Wall -Werror -Wextra -std=c++98 -g  -D DEBUG=1
+CFLAGS := -Wall -Werror -Wextra -std=c++98
 HEADER = ./header
 SRCDIR = src/
 OBJDIR = build/
 
-SRC := main.cpp
+SRC := main.cpp RPN.cpp
 
 GREEN = \033[0;32m
 RED = \033[0;31m
@@ -48,12 +47,3 @@ fclean: clean
 	@echo "$(RED)$(NAME) was deleted"
 
 re: fclean all
-
-debug: CFLAGS = $(DFLAGS)
-debug: re ./$(NAME)
-
-val:
-	valgrind --leak-check=full -s ./$(NAME)
-
-leak:
-	leaks --atExit -- ./$(NAME)
