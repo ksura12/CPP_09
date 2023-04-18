@@ -6,18 +6,18 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2023/04/04 20:02:03 by ksura            ###   ########.fr        #
+#    Updated: 2023/04/18 18:48:16 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := PmergeMe
 CC = c++
-CFLAGS := -Wall -Werror -Wextra -std=c++98
+CFLAGS := -Wall -Werror -Wextra -std=c++98 -lasan
 HEADER = ./header
 SRCDIR = src/
 OBJDIR = build/
 
-SRC := main.cpp
+SRC := main.cpp PmergeMe.cpp
 
 GREEN = \033[0;32m
 RED = \033[0;31m

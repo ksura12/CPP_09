@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/18 17:21:01 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/18 19:00:22 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 PmergeMe::PmergeMe(int argc,  char ** argv)
 {
-    v_input = parse_input(argc, argv);
+    std::cout << "constructor" << std::endl;
+    v_input = parse_input_vector(argc, argv);
+    // l_input = parse_input_list(argc, argv);
 }
 
 PmergeMe::~PmergeMe()
@@ -26,25 +28,62 @@ PmergeMe & PmergeMe::operator=(PmergeMe const & other)
 {
     if (this != &other)
         v_input = other.v_input;
-        l_input = other.l_input;
+        // l_input = other.l_input;
     return (*this);
 }
 
 PmergeMe::PmergeMe(PmergeMe const & other)
 {
     v_input = other.v_input;
-    l_input = other.l_input;
+    // l_input = other.l_input;
 }
 
-// PmergeMe::run()
-// {
-//     // Print unsorted input vector
-//     std::cout << "Before: ";
-//     print_vector(v_input);
+std::vector<int> PmergeMe::parse_input_vector(int argc, char ** argv)
+{
+    // (void) argc;
+    std::vector<int> nums;
+    int i = 1;
+    while (i < argc) {
+        nums.push_back(atoi(argv[i]));
+        i++;
+    }
+    return (nums);
+}
 
-//     // Sort using vector
-//     aoti
-// }
+void    PmergeMe::run()
+{
+    // Print unsorted input vector
+    std::cout << "Before: ";
+    print_vector(v_input);
+
+    // Sort using vector
+    time_used = std::clock();
+    sort(v_input, 0, v_input.size(), 15);
+    time_used = std::clock() - time_used;
+
+    //print sorted vectoe
+    std::cout << "After: ";
+    print_vector(v_input);
+    
+    //print used times
+    std::cout << "Time to process a range of " << v_input.size()
+    << " elements with std::vector : " << (double)time_used << "µs"<< std::endl;
+}
+
+void    PmergeMe::print_vector(std::vector<int> nums) {
+    int size = nums.size();
+    if (size <= 4) {
+        for (int i = 0; i <= size; i++) {
+            std::cout << nums[i]  << " ";
+        }
+        std::cout << std::endl;
+    } else {
+        for(int i = 0;  i < 4; i++) {
+            std::cout << nums[i] << " ";
+        }
+        std::cout << "[...]" << std::endl;
+    }
+}
 
 void PmergeMe::sort(std::vector<int>& nums, int start, int end, int k) {
     if (end - start + 1 <= k) { // base case
