@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:13:45 by ksura             #+#    #+#             */
-/*   Updated: 2023/04/18 18:19:34 by ksura            ###   ########.fr       */
+/*   Updated: 2023/04/28 13:46:16 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
  #define PMERGEME_HPP
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <list>
 #include <ctime>
 #include <algorithm>
+#include <cstdlib>
 
 class PmergeMe
 {
 private:
-    std::vector<int> parse_input_vector(int argc, char ** argv);
-    // std::list<int> parse_input_list(int argc, char ** argv);
+    std::vector<long int> parse_input_vector(int argc, char ** argv);
+    std::list<long int> parse_input_list(int argc, char ** argv);
     
     
     // void display() const;
@@ -36,15 +38,16 @@ private:
     
     // void    devide_container(std::vector<int>& v);
     // void    devide_container(std::list<int>& l);
-    void    insertion_sort(std::vector<int>& nums, int start, int end);
-    // void    insertion_sort(std::list<int>& nums, int start, int end);
-    void    merge_sort(std::vector<int>& nums, int start, int mid, int end);
-    // void    merge_sort(std::list<int>& l);
+    void    insertion_sort(std::vector<long int>& nums, int start, int end);
+    void    insertion_sort(std::list<long int>& nums, int start, int end);
+    void    merge_sort(std::vector<long int>& nums, int start, int mid, int end);
+    void    merge_sort(std::list<long int>& nums, int start, int mid, int end);
 
-    void    print_vector(std::vector<int> nums);
+    void    print_vector(std::vector<long int> nums);
+    void    print_list(std::list<long int> nums);
     
-    std::vector<int> v_input;
-    // std::list<int> l_input;
+    std::vector<long int> v_input;
+    std::list<long int> l_input;
     std::clock_t time_used;
     
 public:
@@ -53,13 +56,9 @@ public:
     PmergeMe & operator=(PmergeMe const & other);
     ~PmergeMe();
 
-    void    run();
-    void sort(std::vector<int>& nums, int start, int end, int k);
-    // void sort(std::list<int>& nums, int start, int end, int k);
-    // void sort(std::vector<int>& nums);
-    // void sort(std::list<int>& nums);
-
-    // void run();
+    void run();
+    void sort(std::vector<long int>& nums, int start, int end, int k);
+    void sort(std::list<long int>& nums, int start, int end, int k);
 };
 
 #endif
