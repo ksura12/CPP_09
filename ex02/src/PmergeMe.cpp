@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/03 12:01:09 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/03 12:01:56 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ void    PmergeMe::run()
     << std::setprecision(0) << " elements with std::vector :\t" 
     << (double)(end - time_used)  * 1000000 / CLOCKS_PER_SEC << "µs"<< std::endl;
 
-    // prnt before sorting
-    std::cout << "List Before:\t";
-    print_list(l_input);
+    // // prnt before sorting
+    // std::cout << "List Before:\t";
+    // print_list(l_input);
     
     //sorting using list
     time_used = std::clock();
     sort(l_input, 0, l_input.size() - 1, 15);
     end = std::clock();
     
-    // prnt before sorting
-    std::cout << "List After:\t";
-    print_list(l_input);
+    // // prnt before sorting
+    // std::cout << "List After:\t";
+    // print_list(l_input);
     
     //print used times
     std::cout << "Time to process a range of " << v_input.size() << std::fixed
