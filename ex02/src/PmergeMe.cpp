@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/03 10:45:22 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/03 12:01:09 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ void    PmergeMe::run()
     << std::setprecision(0) << " elements with std::vector :\t" 
     << (double)(end - time_used)  * 1000000 / CLOCKS_PER_SEC << "µs"<< std::endl;
 
-    //prnt before sorting
-    // std::cout << "List Before:\t";
-    // print_list(l_input);
+    // prnt before sorting
+    std::cout << "List Before:\t";
+    print_list(l_input);
     
     //sorting using list
     time_used = std::clock();
     sort(l_input, 0, l_input.size() - 1, 15);
     end = std::clock();
     
-    //prnt before sorting
-    // std::cout << "List After:\t";
-    // print_list(l_input);
+    // prnt before sorting
+    std::cout << "List After:\t";
+    print_list(l_input);
     
     //print used times
     std::cout << "Time to process a range of " << v_input.size() << std::fixed
@@ -211,11 +211,12 @@ void PmergeMe::sort(std::list<long int>& nums, int start, int end, int k) {
 void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
     int i = start + 1;
     int j = i - 1;
+ 
     std::list<long int>::iterator it = nums.begin();
     std::list<long int>::iterator jt = nums.begin();
     std::advance(it, start + 1);
     std::advance(jt, start);
-    while( j <= end)
+    while( j < end)
     {
         if(*jt >= *it){
             jt = it;
@@ -223,8 +224,9 @@ void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
         std::advance(it, 1);
         j++;
     }
-    it = nums.insert(it, *jt);
+    long int smallest = *jt;
     jt = nums.erase(jt);
+    nums.push_front(smallest);
     i = start + 2;
     std::list<long int>::iterator to_sort = nums.begin();
     std::list<long int>::iterator sorted = nums.begin();
