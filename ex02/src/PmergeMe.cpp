@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/02 17:54:08 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/03 09:59:13 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ std::vector<long int> PmergeMe::parse_input_vector(int argc, char ** argv)
 {
     std::vector<long int> nums;
     int i = 1;
+    char *check;
+    long int result;
     while (i < argc) {
-        if (strtol(argv[i], NULL, 0))
-            nums.push_back(strtol(argv[i], NULL, 0));
+        result = strtol(argv[i], &check, 0);
+        if (argv[i] != check)
+            nums.push_back(result);
         i++;
     }
     return (nums);
@@ -54,10 +57,13 @@ std::vector<long int> PmergeMe::parse_input_vector(int argc, char ** argv)
 std::list<long int> PmergeMe::parse_input_list(int argc, char ** argv)
 {
     std::list<long int> nums;
+    char *check;
     int i = 1;
+    long int result;
     while (i < argc) {
-        if (strtol(argv[i], NULL, 0))
-            nums.push_back(strtol(argv[i], NULL, 0));
+        result = strtol(argv[i], &check, 0);
+        if (argv[i] != check)
+            nums.push_back(result);
         i++;
     }
     return (nums);
@@ -135,7 +141,7 @@ void PmergeMe::sort(std::vector<long int>& nums, int start, int end, int k) {
 
 void PmergeMe::insertion_sort(std::vector<long int>& nums, int start, int end){
     for (int i = start + 1; i <= end; i++) {
-        const int key = nums[i];
+        const long int key = nums[i];
         int j = i - 1;
         while (j >= start && nums[j] > key){
             nums[j + 1] = nums[j];
