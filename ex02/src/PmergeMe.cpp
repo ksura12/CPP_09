@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/03 10:34:20 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/03 10:45:22 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 PmergeMe::PmergeMe(int argc,  char ** argv)
 {
-    std::cout << "constructor" << std::endl;
     v_input = parse_input_vector(argc, argv);
     l_input = parse_input_list(argc, argv);
 }
 
 PmergeMe::~PmergeMe()
 {
-    
 }
 
 PmergeMe & PmergeMe::operator=(PmergeMe const & other)
@@ -62,8 +60,20 @@ std::list<long int> PmergeMe::parse_input_list(int argc, char ** argv)
     long int result;
     while (i < argc) {
         result = strtol(argv[i], &check, 0);
-        if (argv[i] != check)
-            nums.push_back(result);
+        if (argv[i] != check){
+            if(result >= 0)
+                nums.push_back(result);
+            else{
+                std::cout << "ERROR: Positive Integer Values only" << std::endl;
+                nums.clear();
+                return(nums);
+            }
+        }
+        else{
+            std::cout << "ERROR: Positive Integer Values only" << std::endl;
+            nums.clear();
+            return(nums);
+        }
         i++;
     }
     return (nums);
@@ -72,6 +82,8 @@ std::list<long int> PmergeMe::parse_input_list(int argc, char ** argv)
 void    PmergeMe::run()
 {
     // Print unsorted input vector
+    if(v_input.size() == 0 || l_input.size() == 0)
+        return;
     std::cout << "Before:\t";
     print_vector(v_input);
 
