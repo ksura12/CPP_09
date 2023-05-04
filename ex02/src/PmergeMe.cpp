@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/03 12:01:56 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/04 13:14:25 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ void    PmergeMe::run()
     << std::setprecision(0) << " elements with std::vector :\t" 
     << (double)(end - time_used)  * 1000000 / CLOCKS_PER_SEC << "µs"<< std::endl;
 
-    // // prnt before sorting
-    // std::cout << "List Before:\t";
-    // print_list(l_input);
+    // prnt before sorting
+    std::cout << "List Before:\t";
+    print_list(l_input);
     
     //sorting using list
     time_used = std::clock();
     sort(l_input, 0, l_input.size() - 1, 15);
     end = std::clock();
     
-    // // prnt before sorting
-    // std::cout << "List After:\t";
-    // print_list(l_input);
+    // prnt before sorting
+    std::cout << "List After:\t";
+    print_list(l_input);
     
     //print used times
     std::cout << "Time to process a range of " << v_input.size() << std::fixed
@@ -209,6 +209,9 @@ void PmergeMe::sort(std::list<long int>& nums, int start, int end, int k) {
 }
 
 void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
+    
+    // std::cout << "start: " << start << " end: " << end << std::endl;
+    
     int i = start + 1;
     int j = i - 1;
  
@@ -226,8 +229,15 @@ void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
     }
     long int smallest = *jt;
     jt = nums.erase(jt);
-    nums.push_front(smallest);
+    it = nums.begin();
+    std::advance(it, start);
+    nums.insert(it, smallest);
+    // nums.push_front(smallest);
     i = start + 2;
+// //printing Lists
+//     std::cout << "smallest first List :";
+//     print_list(nums);
+    
     std::list<long int>::iterator to_sort = nums.begin();
     std::list<long int>::iterator sorted = nums.begin();
     std::list<long int>::iterator prev = nums.begin();
@@ -274,31 +284,56 @@ void PmergeMe::merge_sort(std::list<long int>& nums, int start, int mid, int end
     }
     R_it = R.begin();
     L_it = L.begin();
+
+    // //printing Lists unorderd
+    // std::cout << "LEft List :";
+    // print_list(L);
+    // std::cout << "Right List :";
+    // print_list(R);
+
     j = 0;
     i = 0;
-    nums.clear();
+    std::list<long int>::iterator begin = nums.begin();
+    std::advance(begin, start);
+    std::list<long int>::iterator ending = nums.begin();
+    std::advance(ending, end + 1);
+    ending = nums.erase(begin, ending);
+    
+    // std::cout << "ending value: " << *ending << std::endl;
+    // nums.clear();
+    // //printin list
+    // std::cout << "list after deleting for mergesort:";
+    // print_list(nums);
+    
     while ( j < n2 && i < n1){
         if (*R_it <= *L_it){
-            nums.push_back(*R_it);
+            nums.insert(ending, *R_it);
+            // ending++;
             R_it = R.erase(R_it);
             j++;
         }
         else{
-            nums.push_back(*L_it);
+            nums.insert(ending, *L_it);
+            // ending++;
             L_it = L.erase(L_it);
             i++;
         }     
     }
     while (i < n1){
-        nums.push_back(*L_it);
+        nums.insert(ending, *L_it);
+        // ending++;
         L_it = L.erase(L_it);
         i++;
     }
     while (j < n2){
-        nums.push_back(*R_it);
+        nums.insert(ending, *R_it);
+        // ending++;
         R_it = R.erase(R_it);
         j++;
     }
+    // //printin list
+    // std::cout << "list after merge sort :";
+    // print_list(nums);
 }
 
 void    PmergeMe::print_list(std::list<long int> nums) {
