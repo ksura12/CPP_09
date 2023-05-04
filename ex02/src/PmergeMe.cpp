@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:23:24 by ksura             #+#    #+#             */
-/*   Updated: 2023/05/04 13:14:25 by ksura            ###   ########.fr       */
+/*   Updated: 2023/05/04 13:21:08 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,27 +92,27 @@ void    PmergeMe::run()
     sort(v_input, 0, v_input.size() - 1, 15);
     std::clock_t end = (std::clock());
 
-    //print sorted vectoe
+    //print sorted vector
     std::cout << "After:\t";
     print_vector(v_input);
     
-    //print used times
+    //print used time
     std::cout << "Time to process a range of " << v_input.size() << std::fixed
     << std::setprecision(0) << " elements with std::vector :\t" 
     << (double)(end - time_used)  * 1000000 / CLOCKS_PER_SEC << "µs"<< std::endl;
 
-    // prnt before sorting
-    std::cout << "List Before:\t";
-    print_list(l_input);
+    // // prnt before sorting
+    // std::cout << "List Before:\t";
+    // print_list(l_input);
     
     //sorting using list
     time_used = std::clock();
     sort(l_input, 0, l_input.size() - 1, 15);
     end = std::clock();
     
-    // prnt before sorting
-    std::cout << "List After:\t";
-    print_list(l_input);
+    // // prnt before sorting
+    // std::cout << "List After:\t";
+    // print_list(l_input);
     
     //print used times
     std::cout << "Time to process a range of " << v_input.size() << std::fixed
@@ -135,7 +135,6 @@ void PmergeMe::sort(std::vector<long int>& nums, int start, int end, int k) {
         return;
     }
     int mid = start + (end - start) / 2; // find the middle index
-    // std::cout << "start, mid, end" << start << " " << mid << " " << end << std::endl;
     sort(nums, start, mid, k); // recursively split the left subsequence
     sort(nums, mid + 1, end, k); // recursively split the right subsequence
     merge_sort(nums, start, mid, end); // merge the two sorted subsequences
@@ -209,9 +208,6 @@ void PmergeMe::sort(std::list<long int>& nums, int start, int end, int k) {
 }
 
 void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
-    
-    // std::cout << "start: " << start << " end: " << end << std::endl;
-    
     int i = start + 1;
     int j = i - 1;
  
@@ -232,12 +228,7 @@ void PmergeMe::insertion_sort(std::list<long int>& nums, int start, int end) {
     it = nums.begin();
     std::advance(it, start);
     nums.insert(it, smallest);
-    // nums.push_front(smallest);
     i = start + 2;
-// //printing Lists
-//     std::cout << "smallest first List :";
-//     print_list(nums);
-    
     std::list<long int>::iterator to_sort = nums.begin();
     std::list<long int>::iterator sorted = nums.begin();
     std::list<long int>::iterator prev = nums.begin();
@@ -284,13 +275,6 @@ void PmergeMe::merge_sort(std::list<long int>& nums, int start, int mid, int end
     }
     R_it = R.begin();
     L_it = L.begin();
-
-    // //printing Lists unorderd
-    // std::cout << "LEft List :";
-    // print_list(L);
-    // std::cout << "Right List :";
-    // print_list(R);
-
     j = 0;
     i = 0;
     std::list<long int>::iterator begin = nums.begin();
@@ -298,42 +282,28 @@ void PmergeMe::merge_sort(std::list<long int>& nums, int start, int mid, int end
     std::list<long int>::iterator ending = nums.begin();
     std::advance(ending, end + 1);
     ending = nums.erase(begin, ending);
-    
-    // std::cout << "ending value: " << *ending << std::endl;
-    // nums.clear();
-    // //printin list
-    // std::cout << "list after deleting for mergesort:";
-    // print_list(nums);
-    
     while ( j < n2 && i < n1){
         if (*R_it <= *L_it){
             nums.insert(ending, *R_it);
-            // ending++;
             R_it = R.erase(R_it);
             j++;
         }
         else{
             nums.insert(ending, *L_it);
-            // ending++;
             L_it = L.erase(L_it);
             i++;
         }     
     }
     while (i < n1){
         nums.insert(ending, *L_it);
-        // ending++;
         L_it = L.erase(L_it);
         i++;
     }
     while (j < n2){
         nums.insert(ending, *R_it);
-        // ending++;
         R_it = R.erase(R_it);
         j++;
     }
-    // //printin list
-    // std::cout << "list after merge sort :";
-    // print_list(nums);
 }
 
 void    PmergeMe::print_list(std::list<long int> nums) {
